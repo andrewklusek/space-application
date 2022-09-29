@@ -1,0 +1,24 @@
+<form [formGroup]="form" (ngSubmit)="orderSpaceShips()">
+  <div class="controlGroup">
+    <label class="control-label">Ilość:</label>
+    <input type="number" [formControl]="form.controls.shipCount"/>
+    <span *ngIf="form.controls.shipCount.hasError('required')" class="error">
+      podaj wartość
+    </span>
+    <span *ngIf="form.controls.shipCount.hasError('min') || form.controls.shipCount.hasError('max')" class="error">
+      podaj liczbę z zakresu 1-5
+    </span>
+  </div>
+  <div class="control-group">
+    <label class="control-label">Typ:</label>
+    <label *ngFor="let spaceShipType of spaceShipTypes">
+      <input type="radio" [formControl]="form.controls.shipType" [value]="spaceShipType.value"/>
+      {{spaceShipType.label}}
+    </label>
+  </div>
+  <div class="control-group">
+    <button type="submit" [disabled]="form.invalid || isProducing">Produkuj</button>
+    <p *ngIf="isProducing">Trwa produkcja...</p>
+  </div>
+  <p>Aktualna liczba statków w hangarze: {{shipsCount | async}}</p>
+</form>
